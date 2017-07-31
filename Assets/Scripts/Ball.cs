@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Ball : MonoBehaviour {
 
@@ -45,12 +47,35 @@ public class Ball : MonoBehaviour {
             //reset ball position
             transform.position = new Vector2(0, 0);
 
+            //update UI score
+            if (coll.gameObject.name == "GoalLeft")
+            {
+                IncreaseScoreText("RightScoreUI");
+            }
+            else
+            {
+                IncreaseScoreText("LeftScoreUI");
+            }
+
             SoundManager.Instance.PlayOneShot(SoundManager.Instance.goalBloop);
         }
 
 	}
 
-    void HandlePaddleHit(Collision2D col)
+    private void IncreaseScoreText(string textUIname)
+    {
+
+        var textUIComp = GameObject.Find(textUIname).GetComponent<Text>();
+
+        int score = int.Parse(textUIComp.text);
+
+        score++;
+
+        textUIComp.text = score.ToString();
+
+    }
+
+    private void HandlePaddleHit(Collision2D col)
     {
         // The relative verticall position hit on the paddle
         float y = (transform.position.y - col.transform.position.y) / col.collider.bounds.size.y;

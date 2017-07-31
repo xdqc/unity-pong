@@ -25,11 +25,11 @@ public class AIPaddle : MonoBehaviour {
         // Make the paddle chase the ball in y direction
         var dir = new Vector2();
 
-        if (theBall.transform.position.y > transform.position.y * Random.Range(0.5f, 2f))
+        if (theBall.transform.position.y + Random.Range(-5,5) > transform.position.y)
         {
             dir = new Vector2(0, 1).normalized;
         }
-        else if (theBall.transform.position.y < transform.position.y * Random.Range(0.5f, 2f))
+        else if (theBall.transform.position.y + Random.Range(-5, 5) < transform.position.y * Random.Range(0.5f, 2f))
         {
             dir = new Vector2(0, -1).normalized;
         }
