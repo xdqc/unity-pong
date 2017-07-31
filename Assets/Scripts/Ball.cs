@@ -17,16 +17,56 @@ public class Ball : MonoBehaviour {
 		rigidBody = GetComponent<Rigidbody2D> ();
 
 		//set init velocity
-		rigidBody.velocity = Vector2.right * speed;
+		rigidBody.velocity = new Vector2(1,0).normalized * speed;
+        
 	}
 	
 	// collision behavior
 	void OnCollisionEnter2D (Collision2D coll) {
 
-		//check what it collide with
-		if(coll.gameObject.name == "PaddleLeft" || coll.gameObject.name == "PaddleRight"){
-			
+		// Check what it collide with
+        // Paddle
+		if(coll.gameObject.name == "PaddleLeft" || coll.gameObject.name == "PaddleRight")
+        {
+            HandlePaddleHit(coll);
+
+            SoundManager.Instance.PlayOneShot(SoundManager.Instance.hitPaddleBloop);
 		}
 
+        // Wall
+        else if(coll.gameObject.name == "WallTop" || coll.gameObject.name == "WallBottom")
+        {
+            SoundManager.Instance.PlayOneShot(SoundManager.Instance.wallBloop);
+        }
+
+        // Goal
+        else if(coll.gameObject.name == "GoalLeft" || coll.gameObject.name == "GoalRight")
+	    {
+            //reset ball position
+            transform.position = new Vector2(0, 0);
+
+            SoundManager.Instance.PlayOneShot(SoundManager.Instance.goalBloop);
+        }
+
 	}
+
+    void HandlePaddleHit(Collision2D col)
+    {
+        // The relative verticall position hit on the paddle
+        float y = (transform.position.y - col.transform.position.y) / col.collider.bounds.size.y;
+
+        Vector2 dir = new Vector2();
+
+        if (col.gameObject.name == "PaddleLeft")
+        {
+            dir = new Vector2(1, y).normalized;
+        }
+        else if (col.gameObject.name == "PaddleRight")
+        {
+            dir = new Vector2(-1, y).normalized;
+        }
+
+        rigidBody.velocity = dir * speed;
+    }
+
 }

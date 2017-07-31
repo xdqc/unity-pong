@@ -17,7 +17,7 @@ public class SoundManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		//singleton
-		if (Instance = null) {
+		if (Instance == null) {
 			Instance = this;
 		}
 		else if (Instance != this) {
@@ -31,10 +31,12 @@ public class SoundManager : MonoBehaviour {
 				soundEffectAudio = source;
 			}
 		}
+
+
 	}
-	
-	public void playOneShot(AudioClip clip)
-	{
-		soundEffectAudio.PlayOneShot (clip);
-	}
+
+    public void PlayOneShot(AudioClip clip)
+    {
+        soundEffectAudio.PlayOneShot(clip, 0.2f);
+    }
 }
